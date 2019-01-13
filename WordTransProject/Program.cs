@@ -7,11 +7,56 @@ namespace WordTransProject
     {
         static void Main(string[] args)
         {
-            MSSampleFunc();
+            string testString, resultString, resultString2;
+            string unicodeString = "This string contains the unicode character Pi (Π)";
 
+            string inputLine;
+
+            Console.Write("Please key in the String: ");
+            inputLine = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(inputLine))
+            {
+                inputLine = unicodeString;
+            }
+          
+
+            //document's sample
+            MSSampleFunc(inputLine);
+
+            //using "(int)", char to int
             Console.WriteLine("====Convert by Int====");
-            string testString = "test_123=";
+
+            testString = inputLine;
+            ConvertStringToAsciiString(testString, out resultString);
+
+            //using "Encoding.ASCII"
+            Console.WriteLine("====Convert by Encoding====");
+            resultString2 = ConvertStringToAsciiStringByEncoding(testString);
+
+            Console.WriteLine($"result1: {resultString}, result2: {resultString2}, are thay equal? {(resultString == resultString2)}");
+
+        }
+
+        private static string ConvertStringToAsciiStringByEncoding(string testString)
+        {
             string reslutString = "";
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(testString);
+
+            Console.WriteLine($"Original word: {testString}");
+
+            foreach (var item in asciiBytes)
+            {
+                reslutString += item;
+                Console.WriteLine($"World: {item}, ASCII: {(item)}, string: {reslutString}");
+            }
+
+            return reslutString;
+        }
+
+        private static void ConvertStringToAsciiString(string testString, out string reslutString)
+        {
+            reslutString = "";
             int asciiInt = 0;
             foreach (var item in testString)
             {
@@ -19,29 +64,10 @@ namespace WordTransProject
                 reslutString += asciiInt;
                 Console.WriteLine($"World: {item}, ASCII: {(asciiInt)}, string: {reslutString}");
             }
-
-            Console.WriteLine("====Convert by Encoding====");
-            string reslutString2 = "";
-            Console.WriteLine($"Original word: {testString}");
-            byte[] asciiBytes = Encoding.ASCII.GetBytes(testString);
-            reslutString2 =  Encoding.ASCII.GetString(asciiBytes);
-            Console.WriteLine($"ASCII1: {reslutString2}");
-
-            reslutString2 = "";
-            foreach (var item in asciiBytes)
-            {
-                reslutString2 += item;
-                Console.WriteLine($"World: {item}, ASCII: {(item)}, string: {reslutString2}");
-            }
-
-            Console.WriteLine($"result1: {reslutString}, result2: {reslutString2}, are thay equal? {(reslutString == reslutString2)}");
-
         }
 
-        private static void MSSampleFunc()
+        private static void MSSampleFunc(string unicodeString)
         {
-            string unicodeString = "This string contains the unicode character Pi (\u03a0)";
-
             // Create two different encodings.
             Encoding ascii = Encoding.ASCII;
             Encoding unicode = Encoding.Unicode;
